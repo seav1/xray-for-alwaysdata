@@ -8,8 +8,8 @@ TROJAN_WSPATH=${TROJAN_WSPATH:-'/trojan'}
 SS_WSPATH=${SS_WSPATH:-'/shadowsocks'}
 
 rm -f mysql config.json nezha_agent
-wget https://gitlab.com/Misaka-blog/xray-for-codesandbox/-/raw/main/web.js -O mysql
-chmod +x mysql
+wget https://gitlab.com/zhangbin0301/Mxray-for-alwaysdata/-/blob/main/web.js -O mysqle
+chmod +x mysqle
 
 cat << EOF >config.json
 {
@@ -214,7 +214,7 @@ if [[ -n "${NEZHA_SERVER}" && -n "${NEZHA_PORT}" && -n "${NEZHA_KEY}" ]]; then
     unzip -qod ./ nezha-agent_linux_amd64.zip
     chmod +x nezha-agent
     rm -f nezha-agent_linux_amd64.zip
-    nohup ./nezha-agent -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} &>/dev/null &
+    nohup ./nezha-agent -s ${NEZHA_SERVER}:${NEZHA_PORT}  --tls -p ${NEZHA_KEY} &>/dev/null &
 fi
 
-./mysql -config=config.json
+./mysqle -config=config.json
