@@ -20,7 +20,7 @@ wget -N https://github.com/Misaka-blog/xray-for-alwaysdata/raw/main/web.sh && ch
 
 * 自己改的
 ```shell
-wget -N https://github.com/zhangbin0301/Mxray-for-alwaysdata/blob/main/web.sh
+wget -N https://github.com/zhangbin0301/Mxray-for-alwaysdata/blob/main/web.sh && chmod +x web.sh
 ```
 
 * 在网站设置中，按照下图设置启动项并设置环境变量
