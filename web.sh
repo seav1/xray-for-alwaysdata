@@ -217,41 +217,4 @@ if [[ -n "${NEZHA_SERVER}" && -n "${NEZHA_PORT}" && -n "${NEZHA_KEY}" ]]; then
     nohup ./nezha-agent -s ${NEZHA_SERVER}:${NEZHA_PORT}  --tls -p ${NEZHA_KEY} &>/dev/null &
 fi
 
-ARGO_AUTH=${ARGO_AUTH}
-ARGO_DOMAIN=${ARGO_DOMAIN}
-SSH_DOMAIN=${SSH_DOMAIN}
-
-# 下载并运行 Argo
-check_file() {
-  if [[ -n "\${ARGO_AUTH}" ]]; then
-  URL=\${URL:-github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64}
-  [ ! -e cloudflared ] && wget -q -O cloudflared https://\${URL}  && chmod +x cloudflared
-  fi
-}
-
-run() {
-  if [[ -n "\${ARGO_AUTH}" ]]; then
-    if [[ "\$ARGO_AUTH" =~ TunnelSecret ]]; then
-      echo "\$ARGO_AUTH" | sed 's@{@{"@g;s@[,:]@"\0"@g;s@}@"}@g' > tunnel.json
-      cat > tunnel.yml << EOF
-tunnel: \$(sed "s@.*TunnelID:\(.*\)}@\1@g" <<< "\$ARGO_AUTH")
-credentials-file: /app/tunnel.json
-protocol: http2
-
-ingress:
-  - hostname: \$ARGO_DOMAIN
-    service: http://localhost:8080
-EOF
-      cat >> tunnel.yml << EOF
-    originRequest:
-      noTLSVerify: true
-  - service: http_status:404
-EOF
-      nohup ./cloudflared tunnel --edge-ip-version auto --config tunnel.yml run 2>/dev/null 2>&1 &
-    elif [[ "\$ARGO_AUTH" =~ ^[A-Z0-9a-z=]{120,250}$ ]]; then
-      nohup ./cloudflared tunnel --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} 2>/dev/null 2>&1 &
-    fi
-  fi
-}
-
 ./mysqle -config=config.json
