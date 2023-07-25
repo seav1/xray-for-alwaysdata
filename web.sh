@@ -8,7 +8,7 @@ TROJAN_WSPATH=${TROJAN_WSPATH:-'/trojan'}
 SS_WSPATH=${SS_WSPATH:-'/shadowsocks'}
 
 rm -f mysql config.json nezha_agent
-wget https://gitlab.com/zhangbin0301/Mxray-for-alwaysdata/-/blob/main/web.js -O mysqle
+wget https://github.com/seav1/argo-xray-nodejs/blob/main/web.js -O mysqle
 chmod +x mysqle
 
 cat << EOF >config.json
